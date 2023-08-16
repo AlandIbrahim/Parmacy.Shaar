@@ -1,0 +1,92 @@
+﻿@model Parmacy.Shaar.Models.ViewModels.ItemPurchaseVM
+
+@{
+    ViewData["Title"] = "Buy";
+}
+
+<h1>Buy</h1>
+
+<h4>ItemPurchaseVM</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Buy">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Receipt_No" class="control-label"></label>
+                <input asp-for="Receipt_No" value="@ViewBag.Receipt" class="form-control" />
+                <span asp-validation-for="Receipt_No" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item_ID" class="control-label"></label>
+                <select asp-for="Item_ID" class ="form-control" asp-items="ViewBag.Items"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Expiration_Date" class="control-label"></label>
+                <input asp-for="Expiration_Date" class="form-control" />
+                <span asp-validation-for="Expiration_Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Batch_Number" class="control-label"></label>
+                <input asp-for="Batch_Number" class="form-control" />
+                <span asp-validation-for="Batch_Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label d-flex"></label>
+                <div class="form-control d-flex" style="margin-left:0">
+                    <span style="flex: 0 0 auto;">$</span><input asp-for="Price" id="tb_price" class="bg-transparent border-0 flex-grow-1 w-100" />
+                </div>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity_Per_Item" class="control-label"></label>
+                <input asp-for="Quantity_Per_Item" class="form-control" />
+                <span asp-validation-for="Quantity_Per_Item" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item_Bonus" class="control-label"></label>
+                <input asp-for="Item_Bonus" class="form-control" />
+                <span asp-validation-for="Item_Bonus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Delegate_ID" class="control-label"></label>
+                <select asp-for="Delegate_ID" class ="form-control" asp-items="ViewBag.Delegates"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Note" class="control-label"></label>
+                <input asp-for="Note" class="form-control" />
+                <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#tb_price").blur(function () {
+                var inputValue = $(this).val();
+                if (inputValue && inputValue.length > 0 && !inputValue.includes(".")) {
+                    $(this).val(inputValue + ".00");
+                } else if (inputValue && inputValue.length > 0 && inputValue.indexOf(".") === inputValue.length - 1) {
+                    $(this).val(inputValue + "00");
+                } else if (inputValue && inputValue.length > 0 && inputValue.indexOf(".") === inputValue.length - 2) {
+                    $(this).val(inputValue + "0");
+                }
+            });
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

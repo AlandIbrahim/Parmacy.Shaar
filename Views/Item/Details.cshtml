@@ -1,0 +1,97 @@
+﻿@model Parmacy.Shaar.Models.ViewModels.ItemDetails
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4 class="border-bottom">@Model.Scientific_Name</h4>
+    <br />
+    <dl class="row">
+        <div class="col-md-6 row">
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.Barcode)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.Barcode)
+            </dd>
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.Scientific_Name)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.Scientific_Name)
+            </dd>
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.description)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.description)
+            </dd>
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.Manufacture_Location)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.Manufacture_Location)
+            </dd>
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.Company)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.Company)
+            </dd>
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.Drug_Type)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.Drug_Type)
+            </dd>
+        </div>
+        <div class="col-md-6 row border-start border-1 border-dark">
+            @foreach (var item in Model.AvailableBatches)
+            {
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(Model => item.batch_no)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(Model => item.batch_no)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(Model => item.Expiration_Date)
+                </dt>
+                <dd class="col-sm-8">
+                    @item.Expiration_Date.ToShortDateString()
+                </dd><dt class="col-sm-4">
+                    Quantity
+                </dt>@if (item.Quantity_in_Pharmacy > 0)
+                {
+                <dd class="col-sm-4">
+                    @Html.DisplayFor(Model => item.Quantity_in_Pharmacy) in pharmacy shelf: <span class="text-primary">@Html.DisplayFor(Model => item.Location_in_Pharmacy)</span>
+                </dd>
+                }
+                @if (item.Quantity_in_Storage > 0)
+                {
+                <dd class="col-sm-4">
+                    @Html.DisplayFor(Model => item.Quantity_in_Storage) in storage shelf: <span class="text-success">@Html.DisplayFor(Model => item.Location_in_Storage)</span>
+                </dd>
+                }
+                @if (item.Quantity_in_Storage == 0 || item.Quantity_in_Pharmacy == 0){
+                <dd class="col-sm-4"/>
+                }
+                <dd class="col-sm-12 border-bottom pb-2"><a class="col-sm-12" asp-action="EditInfo" asp-route-id="@item.Item_Id" asp-route-ExpirationDate="@item.Expiration_Date">Edit</a></dd>
+            }
+            <p class="col-sm-12 text-start text-muted fw-bold">All bought items will be shown here</p>
+        </div>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Item_Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

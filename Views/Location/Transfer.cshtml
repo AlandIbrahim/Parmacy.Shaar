@@ -1,0 +1,120 @@
+﻿@model Parmacy.Shaar.Models.ViewModels.ItemTransferVM
+
+@{
+    float maxVal = Model.QuantityInPharmacy + Model.QuantityInStorage;
+    ViewData["Title"] = "Transfer";
+}
+
+<h1>Transfer</h1>
+
+<h4>Transfer @ViewBag.ItemName</h4>
+<hr />
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form asp-action="Transfer" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="ExpirationDate" class="control-label"></label>
+                <input asp-for="ExpirationDate" value="@Model.ExpirationDate" class="form-control" type="hidden" />
+                <input asp-for="ExpirationDate" value="@Model.ExpirationDate" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <label asp-for="QuantityInPharmacy" class="control-label col-5"></label>
+                    <div class="col-2"></div>
+                    <label asp-for="QuantityInStorage" class="control-label col-5"></label>
+                </div>
+                <div class="row">
+                    <div class="col-5"><input asp-for="QuantityInPharmacy" type="number" min="0" max="@maxVal" id="tb_pharmacy" value="@Model.QuantityInPharmacy" class="form-control" /></div>
+                    <div class="col-2"></div>
+                    <div class="col-5"><input asp-for="QuantityInStorage"  type="number" min="0" max="@maxVal" id="tb_storage" value="@Model.QuantityInStorage" class="form-control" /></div>
+                </div>
+                <div class="row">
+                    <span asp-validation-for="QuantityInPharmacy" class="text-danger col-5"></span>
+                    <div class="col-2"></div>
+                    <span asp-validation-for="QuantityInStorage" class="text-danger col-5"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <label asp-for="LocationInPharmacy" class="control-label col-5"></label>
+                    <div class="col-2"></div>
+                    <label asp-for="LocationInStorage" class="control-label col-5"></label>
+                </div>
+                <div class="row">
+                    <div class="col-5"><input asp-for="LocationInPharmacy" value="@Model.LocationInPharmacy" class="form-control" /></div>
+                    <div class="col-2"></div>
+                    <div class="col-5"><input asp-for="LocationInStorage" value="@Model.LocationInStorage" class="form-control" /></div>
+                </div>
+                <div class="row">
+                    <span asp-validation-for="LocationInPharmacy" class="text-danger col-5"></span>
+                    <div class="col-2"></div>
+                    <span asp-validation-for="LocationInStorage" class="text-danger col-5"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Items">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+        const tb_pharmacy = document.getElementById('tb_pharmacy');
+        const tb_storage = document.getElementById('tb_storage');
+
+        // Initialize values
+        let val_pharmacy = parseFloat(tb_pharmacy.value);
+        let val_storage = parseFloat(tb_storage.value);
+        // Maximum sum value
+        const maxSum = @maxVal;
+
+
+        // Event listener for tb_pharmacy
+        tb_pharmacy.addEventListener('input', function () {
+            val_pharmacy = parseFloat(tb_pharmacy.value);
+            if(isNaN(val_pharmacy)) val_pharmacy=0;
+            val_storage = maxSum - val_pharmacy;
+            if (val_storage < 0) {
+                val_storage = 0;
+                tb_storage.value=0
+                val_pharmacy = maxSum;
+                tb_pharmacy.value=maxSum;
+            }
+            if (val_pharmacy < 0) {
+                val_pharmacy = 0;
+                tb_pharmacy.value = 0;
+                val_storage = maxSum;
+                tb_storage.value = maxSum;
+            }
+            tb_storage.value = val_storage;
+        });
+
+        // Event listener for tb_storage
+        tb_storage.addEventListener('input', function () {
+            val_storage = parseFloat(tb_storage.value);
+            if(isNaN(val_storage)) val_storage=0;
+            val_pharmacy = maxSum - val_storage;
+            if (val_pharmacy < 0) {
+                val_pharmacy = 0;
+                tb_pharmacy.value=0;
+                val_storage = maxSum;
+                tb_storage.value=maxSum;
+            }
+            if (val_storage < 0) {
+                val_storage = 0;
+                tb_storage.value = 0
+                val_pharmacy = maxSum;
+                tb_pharmacy.value = maxSum;
+            }
+            tb_pharmacy.value = val_pharmacy;
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

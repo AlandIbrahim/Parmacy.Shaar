@@ -1,0 +1,57 @@
+﻿<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 justify-content-around">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Pharmacy.Shaar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Items
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" asp-controller="Item" asp-action="Index">All items</a></li>
+                            <li><a class="dropdown-item" asp-controller="Item" asp-action="Create">Create new</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Business
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" asp-controller="Business" asp-action="Buy">Buy</a></li>
+                            <li><a class="dropdown-item" asp-controller="Business" asp-action="Sell">Sell</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Location" asp-action="Items">Locations</a></li>
+                    @if (Context.Session.GetInt32("Permission") != null && Context.Session.GetInt32("Permission") == 1)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Admin
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-controller="Admin" asp-action="index">Dashboard</a></li>
+                                <li><a class="dropdown-item" asp-controller="Admin" asp-action="Register">Add new user</a></li>
+                                <li><a class="dropdown-item" asp-controller="Admin" asp-action="SetPrice">Set price for items</a></li>
+                            </ul>
+                        </li>
+                    }
+                    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
+                </ul>
+            </div>
+        </div>
+        @if (Context.Session.GetInt32("UID") != null)
+        {
+            <a class="nav-link text-dark" asp-controller="User" asp-action="Logout">Logout</a>
+        }
+        else
+        {
+            <a class="nav-link text-dark" asp-controller="User" asp-action="Login">Login</a>
+        }
+    </nav>
+</header>
